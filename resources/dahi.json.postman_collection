@@ -1,0 +1,88 @@
+{
+	"id": "9519c632-e6e3-b8e2-fe73-c84fa1a7306f",
+	"name": "dahi",
+	"description": "",
+	"order": [
+		"02e2cca1-4c59-212c-8f68-70671eac48d6",
+		"fd5633f7-fe2a-2047-716f-0364999e20a3",
+		"bcc45a53-7e9f-f4fb-eb1c-2a82ad859f5e"
+	],
+	"folders": [],
+	"timestamp": 1460929960948,
+	"owner": "36012",
+	"remoteLink": "",
+	"public": false,
+	"requests": [
+		{
+			"id": "02e2cca1-4c59-212c-8f68-70671eac48d6",
+			"headers": "",
+			"url": "{{HOST}}/api/v1/docs",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "9519c632-e6e3-b8e2-fe73-c84fa1a7306f",
+			"data": null,
+			"dataMode": "params",
+			"name": "{{HOST}}/api/v1/docs",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1460931167358,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "bcc45a53-7e9f-f4fb-eb1c-2a82ad859f5e",
+			"headers": "",
+			"url": "{{HOST}}/api/v1/answer?q=kredi karti",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "9519c632-e6e3-b8e2-fe73-c84fa1a7306f",
+			"data": null,
+			"dataMode": "params",
+			"name": "{{HOST}}/api/v1/answer?q=kredi karti",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1460932547060,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "fd5633f7-fe2a-2047-716f-0364999e20a3",
+			"headers": "",
+			"url": "{{HOST}}/api/v1/docs/",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "question",
+					"value": "kredi karti son kullanma tarihi nedir?",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "answer",
+					"value": "onumuzdeki yil osnlaniyor",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1460932018343,
+			"name": "{{HOST}}/api/v1/docs",
+			"description": "",
+			"collectionId": "9519c632-e6e3-b8e2-fe73-c84fa1a7306f",
+			"responses": []
+		}
+	]
+}
