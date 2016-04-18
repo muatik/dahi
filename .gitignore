@@ -60,3 +60,12 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+#pycharm
+.idea/
+
+# virtualenv
+venv/
+
+# vagrant
+.vagrant/
