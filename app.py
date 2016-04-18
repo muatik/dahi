@@ -1,6 +1,9 @@
 from bson import ObjectId
+from dahi.bot import Bot
+from dahi.context import Context
 from dahi.document import Document
 from dahi.documents import Documents
+from dahi.statement import Statement
 from flask import Flask, Blueprint, request, jsonify
 from pymongo import MongoClient
 
@@ -34,8 +37,20 @@ def insertDoc():
 
 @api.route("/answer")
 def getAnswer():
-    query = request.args["q"]
-    return query
+    queryStatement = Statement(request.args["q"])
+
+    botId = 12
+    userId = 3
+
+    bot = Bot()
+
+    context = Context()
+    responseStatement = bot.respond(context, queryStatement)
+
+    context.insert(queryStatement)
+    context.insert(responseStatement)
+
+    return responseStatement.text
 
 
 def run():

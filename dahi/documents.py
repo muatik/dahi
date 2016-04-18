@@ -22,7 +22,6 @@ class Documents(object):
         return Documents.genDoc(data)
 
     def insert(self, doc):
-        print doc.toDB()
         self.db.insert(doc.toDB())
 
     def update(self, doc):
