@@ -14,13 +14,13 @@ class Document(object):
     def toJSON(self):
         return {
             "_id": str(self.id),
-            "statement": self.statement,
+            "statement": self.statement.toJSON(),
             "onMatch": self.onMatch
         }
 
     def toDB(self):
         return {
             "_id": ObjectId(self.id),  # FIXME: I don't like ObjectId() here
-            "statement": self.statement,
+            "statement": self.statement.toDB(),
             "onMatch": self.onMatch
         }

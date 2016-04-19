@@ -13,11 +13,12 @@ api = Blueprint("api", __name__, url_prefix="/api/v1")
 # TODO: move the db initialization into a separate module
 db = MongoClient("mongodb://192.168.33.12")["dahi"]
 docs = Documents(db["docs"])
+botId = 12
 
 
 @api.route("/docs/")
 def getDocs():
-    d = docs.getAll()
+    d = Bot(botId).knowledgeBase.getAll()
     # TODO: improve this jsonify operation, make it less verbose
     a = [i.toJSON() for i in d]
     return jsonify({"docs": a})
@@ -29,28 +30,29 @@ def insertDoc():
     answer = request.form["answer"]
     #onMatch = 'return """\n{}\n""" '.format(answer)
     onMatch = answer
-    doc = Document(ObjectId(), statement=question, onMatch=onMatch)
-    d = docs.insert(doc)
+
+    doc = Document(ObjectId(), statement=Statement(question), onMatch=onMatch)
+    bot = Bot(botId)
+    bot.learn(doc)
+
     # TODO: every response must be in a standard format. restfulApi doc needed.
-    return doc.toJSON()
+    return jsonify(doc.toJSON())
 
 
 @api.route("/answer")
 def getAnswer():
     queryStatement = Statement(request.args["q"])
 
-    botId = 12
     userId = 3
 
-    bot = Bot()
+    bot = Bot(botId)
 
     context = Context()
     responseStatement = bot.respond(context, queryStatement)
 
     context.insert(queryStatement)
     context.insert(responseStatement)
-
-    return responseStatement.text
+    return jsonify(responseStatement.toJSON())
 
 
 def run():
