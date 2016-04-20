@@ -1,6 +1,8 @@
 from dahi import nlu
 from dahi.knowledgebase import KnowledgeBase
+from dahi.nlu import NLU
 from dahi.statement import Statement
+from dahi.tfidfTable import TfIdfTable
 
 
 class Bot(object):
@@ -9,11 +11,14 @@ class Bot(object):
         self.knowledgeBase = KnowledgeBase(self.id)
 
     def respond(self, context, statement):
-        docs = [i.statement.text for i in self.knowledgeBase.getAll()]
+        docs = list(self.knowledgeBase.getAll())
+        nlu = NLU(docs)
         try:
-            a = nlu.findAnswer(statement.text, docs)
-            a = docs[a[0]]
+            a = nlu.findBestMatches(statement.text, threshold=0.3, amount=4)
+            print a[0]
+            a = self.knowledgeBase.get(a[0]).statement.text
         except Exception as e:
+            print e.message
             a = "sorry, I did not get it."
 
         return Statement(a)

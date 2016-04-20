@@ -14,7 +14,7 @@ class KnowledgeBase(object):
     @staticmethod
     def genDoc(data):
         return Document(
-            data["_id"],
+            str(data["_id"]),
             Statement(data["statement"]["text"]),
             data["onMatch"])
 
@@ -22,7 +22,7 @@ class KnowledgeBase(object):
         return (KnowledgeBase.genDoc(i) for i in self.db.find())
 
     def get(self, docID):
-        data = self.db.find_one({"_id": docID})
+        data = self.db.find_one({"_id": ObjectId(docID)})
         return KnowledgeBase.genDoc(data)
 
     def insert(self, doc):
