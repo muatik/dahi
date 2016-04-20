@@ -1,0 +1,14 @@
+#maincontainer{
+    padding: 15px;
+}
+
+
+#shoutbox{
+    min-width: 290px;
+}
+#result{
+    margin: 10px 0;
+}
+#answer{
+    padding-left: 15px;
+}

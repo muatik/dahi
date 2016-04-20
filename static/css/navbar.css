@@ -1,0 +1,12 @@
+ #mainnavbar{
+    padding: 0;
+ }
+.navbar-brand {
+    margin: 15px 50px 0px 30px;
+}
+.nav-pills{
+    border-bottom: 1px solid #CECECE;
+    padding: 10px;
+    background: #F1F1F1;
+    color: black;
+}
