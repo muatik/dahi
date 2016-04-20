@@ -1,10 +1,27 @@
-import math
 import operator
 
-from dahi.document import Document
+
+class MatchNotFound(Exception):
+    def __init__(self, msg="no answer matched", code=400):
+        super(MatchNotFound, self).__init__(msg)
+        self.msg = msg
+        self.code = code
+
+    def __json__(self):
+        return {
+            "type": self.__class__.__name__,
+            "message": self.msg,
+            "code": self.code}
+
+    def __str__(self):
+        return "{}: code: {}, message: {}".format(
+            self.__class__.__name__,
+            self.code,
+            self.msg)
 
 
 class NLU(object):
+
     def __init__(self, docs=None):
         super(NLU, self).__init__()
         from dahi.tfidfTable import TfIdfTable
@@ -25,23 +42,24 @@ class NLU(object):
         return sorted(
             scores.items(), key=operator.itemgetter(1), reverse=True)[:5]
 
+    def findBestMatch(self, matches):
+        bestMatch = matches[0]
+        score = bestMatch[1]
+        if score > 0.3:
+            return bestMatch
 
-    def findAnswer(self, query):
+    def findAnswer(self, query, **kwargs):
         matches = self.match(query)
 
-        bestMatch = findBestMatch(matches)
+        if not matches:
+            raise MatchNotFound()
+
+        bestMatch = self.findBestMatch(matches)
         if not bestMatch:
-            raise Exception("no answer matched")
+            raise MatchNotFound()
 
         docID = bestMatch[0]
         return docID, bestMatch[1]
-
-
-def findBestMatch(matches):
-    bestMatch =  matches[0]
-    score = bestMatch[1]
-    if score > 0.3:
-        return bestMatch
 
 
 def tokenize(text):
@@ -65,24 +83,4 @@ def tokenize(text):
 #
 # def sigmoid(x):
 #     return 1 / (1 + math.exp(-x))
-
-
-
-
-
-def findRepresentativeTerm(doc, docs):
-    scores = {}
-    for term in tokenize(doc):
-        scores[term] = scores.get(term, 0) + tf(term, doc) * idf(term, docs)
-    return sorted(scores.items(), key=operator.itemgetter(1), reverse=True)[:5]
-
-
-def findAnswerThroughContext(query, docs):
-    prev_doc = docs[1]
-    context_term = findRepresentativeTerm(prev_doc)
-    query = query + " " + context_term[0][0]
-    return findAnswer(query)
-
-
-
 
