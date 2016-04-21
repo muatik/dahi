@@ -14,7 +14,7 @@ class Documents(object):
     def genDoc(data):
         return Document(
             data["_id"],
-            data["statement"],
+            data["statements"],
             data["onMatch"])
 
     def get(self, docID):

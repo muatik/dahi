@@ -48,7 +48,7 @@ def insertDoc():
     #onMatch = 'return """\n{}\n""" '.format(answer)
     onMatch = answer
 
-    doc = Document(ObjectId(), statement=Statement(question), onMatch=onMatch)
+    doc = Document(ObjectId(), statements=[Statement(question)], onMatch=onMatch)
     bot = Bot(botId)
     bot.learn(doc)
 

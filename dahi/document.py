@@ -2,25 +2,25 @@ from bson import ObjectId
 
 
 class Document(object):
-    def __init__(self, docID, statement, onMatch):
+    def __init__(self, docID, statements, onMatch):
         super(Document, self).__init__()
-        self.statement = statement
+        self.statements = statements if statements else []
         self.id = docID
         self.onMatch = onMatch
 
     def __repr__(self):
-        return "Doc <{}, {}>".format(self.id, self.statement)
+        return "Document <{}>".format(self.id)
 
     def toJSON(self):
         return {
             "_id": str(self.id),
-            "statement": self.statement.toJSON(),
+            "statements": [i.toJSON() for i in self.statements],
             "onMatch": self.onMatch
         }
 
     def toDB(self):
         return {
             "_id": ObjectId(self.id),  # FIXME: I don't like ObjectId() here
-            "statement": self.statement.toDB(),
+            "statements": [i.toDB() for i in self.statements],
             "onMatch": self.onMatch
         }

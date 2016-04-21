@@ -15,7 +15,7 @@ class KnowledgeBase(object):
     def genDoc(data):
         return Document(
             str(data["_id"]),
-            Statement(data["statement"]["text"]),
+            [Statement(i["text"]) for i in data["statements"]],
             data["onMatch"])
 
     def getAll(self):

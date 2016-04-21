@@ -11,19 +11,30 @@ class TfIdfTable(object):
         if docs:
             self.generate(docs)
 
+    @classmethod
+    def parseStatementID(cls, statementID):
+        docID, statementID = statementID.split("-")
+        return docID, statementID
+
+    @classmethod
+    def toStatementID(cls, docID, statementID):
+        return "{}-{}".format(docID, statementID)
+
     def generate(self, docs):
         table = {}
 
         # filling the table with tf values for each term found in docs
         for doc in docs:
-            terms = tokenize(doc.statement.text)
-            n = len(terms)
-
-            for t in terms:
-                tData = table.get(t, copy.deepcopy(TfIdfTable.EMPTY_TERM_DATA))
-                w = tData["tf"].get(doc.id, 0)
-                tData["tf"][doc.id] = float(w * n + 1) / n
-                table[t] = tData
+            for i, statement in enumerate(doc.statements):
+                terms = tokenize(statement.text)
+                n = len(terms)
+                statementID = TfIdfTable.toStatementID(doc.id, i)
+                for t in terms:
+                    tData = table.get(t, copy.deepcopy(
+                        TfIdfTable.EMPTY_TERM_DATA))
+                    w = tData["tf"].get(statementID, 0)
+                    tData["tf"][statementID] = float(w * n + 1) / n
+                    table[t] = tData
 
         # filling the table with idf values for each term found in the table
         for t in table:
@@ -42,21 +53,14 @@ class TfIdfTable(object):
         return self.table.get(
             term, copy.deepcopy(TfIdfTable.EMPTY_TERM_DATA))["tf"]
 
-    def getTf(self, term, doc=None, docID=None):
+    def getTf(self, term, statementID):
         """
 
         :param term:
-        :param doc:
-        :param docID:
+        :param statementID:
         :return:
         """
-        if doc:
-            docID = doc.id
-        if not docID:
-            raise AttributeError("either document instance or document id "
-                                 "must be given")
-
-        return self.getTfs(term).get(docID, None)
+        return self.getTfs(term).get(statementID, None)
 
     def getTfDocs(self, term):
         """
@@ -70,15 +74,14 @@ class TfIdfTable(object):
         return self.table.get(
             term, copy.deepcopy(TfIdfTable.EMPTY_TERM_DATA))["idf"]
 
-    def getTfIdfScore(self, term, doc=None, docID=None):
+    def getTfIdfScore(self, term, statementID):
         """
 
         :param term:
-        :param doc:
-        :param docID:
+        :param statementID:
         :return:
         """
-        tf = self.getTf(term, docID=docID)
+        tf = self.getTf(term, statementID)
         if not tf:
             return None
         return tf * float(self.getIdf(term))

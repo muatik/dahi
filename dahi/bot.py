@@ -14,8 +14,9 @@ class Bot(object):
         nlu = NLU(docs)
 
         try:
-            a = nlu.findAnswer(statement.text, threshold=0.3, amount=4)
-            a = self.knowledgeBase.get(a[0]).statement.text
+            docID, statementID, score = nlu.findAnswer(
+                statement.text, threshold=0.3, amount=4)
+            a = self.knowledgeBase.get(docID).statements[int(statementID)].text
         except MatchNotFound as e:
             # FIXME: this should not be literal, instead, knowledgeBase can be
             # used to get this.

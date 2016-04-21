@@ -34,10 +34,11 @@ class NLU(object):
         scores = {}
 
         for term in tokenize(query):
-            docIDs = self.tfIdfTable.getTfDocs(term)
-            for docID in docIDs:
-                termScore = self.tfIdfTable.getTfIdfScore(term,docID=docID)
-                scores[docID] = scores.get(docID, 0) + termScore
+            statementIDs = self.tfIdfTable.getTfDocs(term)
+            for statementID in statementIDs:
+                termScore = self.tfIdfTable.getTfIdfScore(
+                    term, statementID=statementID)
+                scores[statementID] = scores.get(statementID, 0) + termScore
 
         return sorted(
             scores.items(), key=operator.itemgetter(1), reverse=True)[:5]
@@ -58,8 +59,10 @@ class NLU(object):
         if not bestMatch:
             raise MatchNotFound()
 
-        docID = bestMatch[0]
-        return docID, bestMatch[1]
+        from dahi.tfidfTable import TfIdfTable
+        docID, statementID = TfIdfTable.parseStatementID(bestMatch[0])
+        score = bestMatch[1]
+        return docID, statementID, score
 
 
 def tokenize(text):
