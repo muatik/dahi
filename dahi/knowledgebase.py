@@ -11,19 +11,12 @@ class KnowledgeBase(object):
         self.docs = []
         self.db = getDB()["docs"]
 
-    @staticmethod
-    def genDoc(data):
-        return Document(
-            str(data["_id"]),
-            [Statement(i["text"]) for i in data["statements"]],
-            data["onMatch"])
-
     def getAll(self):
-        return (KnowledgeBase.genDoc(i) for i in self.db.find())
+        return (Document.generate(i) for i in self.db.find())
 
     def get(self, docID):
         data = self.db.find_one({"_id": ObjectId(docID)})
-        return KnowledgeBase.genDoc(data)
+        return Document.generate(data)
 
     def insert(self, doc):
         self.db.insert(doc.toDB())
@@ -39,3 +32,9 @@ class KnowledgeBase(object):
         elif not docID:
             raise AttributeError("neither document itself or its id is given")
         self.db.remove({"_id": docID})
+
+    def truncate(self):
+        self.db.remove()
+
+    def count(self):
+        return self.db.count()

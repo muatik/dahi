@@ -1,12 +1,31 @@
 from bson import ObjectId
+from dahi.statement import Statement
 
 
 class Document(object):
-    def __init__(self, docID, statements, onMatch):
+    def __init__(self, docID, botSay=None, humanSay=None, onMatch=None):
         super(Document, self).__init__()
-        self.statements = statements if statements else []
+        self.botSay = botSay
+        self.humanSay = humanSay
         self.id = docID
         self.onMatch = onMatch
+
+    @staticmethod
+    def generate(data):
+        botSay = None
+        humanSay = None
+
+        if data.get("botSay", None):
+            botSay = Statement.generate(data["botSay"])
+
+        if data.get("humanSay", None):
+            humanSay = Statement.generate(data["humanSay"])
+
+        return Document(
+            docID=str(data["_id"]),
+            botSay=botSay,
+            humanSay=humanSay,
+            onMatch=data["onMatch"])
 
     def __repr__(self):
         return "Document <{}>".format(self.id)
@@ -14,13 +33,15 @@ class Document(object):
     def toJSON(self):
         return {
             "_id": str(self.id),
-            "statements": [i.toJSON() for i in self.statements],
+            "botSay": self.botSay.toJson() if self.botSay else None,
+            "humanSay": self.humanSay.toJson if self.humanSay else None,
             "onMatch": self.onMatch
         }
 
     def toDB(self):
         return {
             "_id": ObjectId(self.id),  # FIXME: I don't like ObjectId() here
-            "statements": [i.toDB() for i in self.statements],
+            "botSay": self.botSay.toDB() if self.botSay else None,
+            "humanSay": self.humanSay.toDB() if self.humanSay else None,
             "onMatch": self.onMatch
         }

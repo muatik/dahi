@@ -1,15 +1,17 @@
 from dahi.nlu import tokenize
-import copy
+from copy import deepcopy
 
 
-class TfIdfTable(object):
-    EMPTY_TERM_DATA = {"tf": {}, "idf": 0}
+class TfIdfModel(object):
+    EMPTY_TERM_ITEM = {
+        "tf": {},
+        "idf": 0
+    }
 
-    def __init__(self, docs=None):
-        super(TfIdfTable, self).__init__()
+    def __init__(self, knowledgeBase):
+        super(TfIdfModel, self).__init__()
         self.table = {}
-        if docs:
-            self.generate(docs)
+        self.generate(knowledgeBase)
 
     @classmethod
     def parseStatementID(cls, statementID):
@@ -20,18 +22,17 @@ class TfIdfTable(object):
     def toStatementID(cls, docID, statementID):
         return "{}-{}".format(docID, statementID)
 
-    def generate(self, docs):
+    def generate(self, knowledge_base):
         table = {}
 
         # filling the table with tf values for each term found in docs
-        for doc in docs:
-            for i, statement in enumerate(doc.statements):
+        for doc in knowledge_base.getAll():
+            for i, statement in enumerate([doc.humanSay]):
                 terms = tokenize(statement.text)
                 n = len(terms)
-                statementID = TfIdfTable.toStatementID(doc.id, i)
+                statementID = TfIdfModel.toStatementID(doc.id, i)
                 for t in terms:
-                    tData = table.get(t, copy.deepcopy(
-                        TfIdfTable.EMPTY_TERM_DATA))
+                    tData = table.get(t, deepcopy(TfIdfModel.EMPTY_TERM_ITEM))
                     w = tData["tf"].get(statementID, 0)
                     tData["tf"][statementID] = float(w * n + 1) / n
                     table[t] = tData
@@ -39,7 +40,7 @@ class TfIdfTable(object):
         # filling the table with idf values for each term found in the table
         for t in table:
             df = len(table[t]["tf"])
-            idf = len(docs) / float(1 + df)
+            idf = knowledge_base.count() / float(1 + df)
             table[t]["idf"] = idf
 
         self.table = table
@@ -51,7 +52,7 @@ class TfIdfTable(object):
         :return:
         """
         return self.table.get(
-            term, copy.deepcopy(TfIdfTable.EMPTY_TERM_DATA))["tf"]
+            term, deepcopy(TfIdfModel.EMPTY_TERM_ITEM))["tf"]
 
     def getTf(self, term, statementID):
         """
@@ -72,7 +73,7 @@ class TfIdfTable(object):
 
     def getIdf(self, term):
         return self.table.get(
-            term, copy.deepcopy(TfIdfTable.EMPTY_TERM_DATA))["idf"]
+            term, deepcopy(TfIdfModel.EMPTY_TERM_ITEM))["idf"]
 
     def getTfIdfScore(self, term, statementID):
         """
@@ -88,13 +89,27 @@ class TfIdfTable(object):
 
 if __name__ == '__main__':
     # example
-    # a = [Document(42, "elma armut elma elma", None),
-    #      Document(71, "karpuz armut patates", None),
-    #      Document(56, "elma uzum limon", None)]
-    # tt = TfIdfTable()
-    # tt.generate(a)
-    # print tt.table
-    # print tt.getTfs("karp")
-    # print tt.getIdf("karp")
-    # print tt.getTfIdfScore("karp", docID=71)
+    from document import Document
+    from statement import Statement
+    from knowledgebase import KnowledgeBase
+    a = [Document(42, [Statement("elma armut elma elma")], None),
+         Document(71, [Statement("karpuz armut patates")], None),
+         Document(56, [Statement("elma uzum limon")], None)]
+
+    def getCount():
+        return 3
+
+    def getAll():
+        return a
+
+    kb = KnowledgeBase(3)
+    kb.getAll = getAll
+    kb.count = getCount
+    tt = TfIdfModel(kb)
+    tt.generate(kb)
+
+    print tt.table
+    print tt.getTfs("karp")
+    print tt.getIdf("karp")
+    print tt.getTfIdfScore("karp", docID=71)
     pass

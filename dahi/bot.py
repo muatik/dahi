@@ -5,13 +5,11 @@ from dahi.statement import Statement
 
 class Bot(object):
 
-    def __init__(self, botID):
-        self.id = botID
-        self.knowledgeBase = KnowledgeBase(self.id)
+    def __init__(self, knowledgeBase):
+        self.knowledgeBase = knowledgeBase
 
     def respond(self, context, statement):
-        docs = list(self.knowledgeBase.getAll())
-        nlu = NLU(docs)
+        nlu = NLU(context, self.knowledgeBase)
 
         try:
             docID, statementID, score = nlu.findAnswer(

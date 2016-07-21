@@ -2,9 +2,10 @@ from pymongo import MongoClient
 
 db = None
 
+
 def getDB():
     if db:
         return db
     global db
-    db = MongoClient("mongodb://192.168.33.12")["dahi"]
+    db = MongoClient("mongodb://localhost")["dahi"]
     return db
