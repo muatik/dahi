@@ -2,8 +2,12 @@ from bson import ObjectId
 from dahi.statement import Statement
 
 
+class InvalidDocument(Exception):
+    pass
+
+
 class Document(object):
-    def __init__(self, docID, botSay=None, humanSay=None, onMatch=None):
+    def __init__(self, docID=None, botSay=None, humanSay=None, onMatch=None):
         super(Document, self).__init__()
         self.botSay = botSay
         self.humanSay = humanSay

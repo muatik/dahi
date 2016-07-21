@@ -22,14 +22,11 @@ class MatchNotFound(Exception):
 
 class NLU(object):
 
-    def __init__(self, context, knowledgebase):
+    def __init__(self, context, knowledgeBase):
         super(NLU, self).__init__()
         from dahi.tfidfModel import TfIdfModel
-        self.tfIdfTable = TfIdfModel(knowledgebase)
-        self.model = TfIdfModel(knowledgebase)
-
-    def learn(self, docs):
-        self.tfIdfTable.generate(docs)
+        self.tfIdfTable = TfIdfModel(knowledgeBase)
+        self.model = TfIdfModel(knowledgeBase)
 
     def match(self, query):
         scores = {}
@@ -50,8 +47,8 @@ class NLU(object):
         if score > 0.3:
             return bestMatch
 
-    def findAnswer(self, query, **kwargs):
-        matches = self.match(query)
+    def findAnswer(self, text, **kwargs):
+        matches = self.match(text)
 
         if not matches:
             raise MatchNotFound()

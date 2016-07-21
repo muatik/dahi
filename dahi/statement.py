@@ -1,10 +1,15 @@
 class Statement(object):
+    """
+    Statement is a text message container for both humans and bots.
+    """
+
     def __init__(self, text):
         super(Statement, self).__init__()
         self.text = text
 
     def toJSON(self):
         """
+
         returns instance's json representation
 
         :return: JSON
@@ -12,6 +17,12 @@ class Statement(object):
         return {"text": self.text}
 
     def toDB(self):
+        """
+        returns instance's suitable representation for database. It actually
+        converts all data into python's primitive data types.
+
+        :return: dictionary
+        """
         return self.toJSON()
 
     def __str__(self):

@@ -1,4 +1,4 @@
-from dahi.knowledgebase import KnowledgeBase
+from dahi.document import Document
 from dahi.nlu import NLU, MatchNotFound
 from dahi.statement import Statement
 
@@ -11,16 +11,21 @@ class Bot(object):
     def respond(self, context, statement):
         nlu = NLU(context, self.knowledgeBase)
 
+        context.humanSays(statement)
+
         try:
             docID, statementID, score = nlu.findAnswer(
                 statement.text, threshold=0.3, amount=4)
-            a = self.knowledgeBase.get(docID).statements[int(statementID)].text
+            doc = self.knowledgeBase.get(docID)
+            if doc.botSay:
+                statement = doc.botSay
         except MatchNotFound as e:
             # FIXME: this should not be literal, instead, knowledgeBase can be
             # used to get this.
-            a = "sorry, I did not get it."
+            doc = Document(botSay=Statement("sorry, I did not get it."))
 
-        return Statement(a)
+        context.botSays(doc)
+        return statement
 
     def learn(self, doc):
         self.knowledgeBase.insert(doc)
