@@ -9,6 +9,7 @@ dahi.bot module
 
 .. automodule:: dahi.bot
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.context module
@@ -16,6 +17,7 @@ dahi.context module
 
 .. automodule:: dahi.context
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.document module
@@ -23,6 +25,7 @@ dahi.document module
 
 .. automodule:: dahi.document
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.documents module
@@ -30,6 +33,7 @@ dahi.documents module
 
 .. automodule:: dahi.documents
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.example module
@@ -37,6 +41,7 @@ dahi.example module
 
 .. automodule:: dahi.example
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.knowledgebase module
@@ -44,6 +49,7 @@ dahi.knowledgebase module
 
 .. automodule:: dahi.knowledgebase
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.nlu module
@@ -51,6 +57,7 @@ dahi.nlu module
 
 .. automodule:: dahi.nlu
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.statement module
@@ -58,6 +65,7 @@ dahi.statement module
 
 .. automodule:: dahi.statement
     :members:
+    :undoc-members:
     :show-inheritance:
 
 dahi.storages module
@@ -65,13 +73,15 @@ dahi.storages module
 
 .. automodule:: dahi.storages
     :members:
+    :undoc-members:
     :show-inheritance:
 
-dahi.tfidfModel module
-----------------------
+dahi.tfidfMatcher module
+------------------------
 
-.. automodule:: dahi.tfidfModel
+.. automodule:: dahi.tfidfMatcher
     :members:
+    :undoc-members:
     :show-inheritance:
 
 
@@ -80,4 +90,5 @@ Module contents
 
 .. automodule:: dahi
     :members:
+    :undoc-members:
     :show-inheritance:

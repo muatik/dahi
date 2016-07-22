@@ -1,9 +1,12 @@
+from dahi import CONFIG, import_component
 from dahi.bot import Bot
 from dahi.context import Context
 from dahi.document import Document
 from dahi.knowledgebase import KnowledgeBase
+from dahi.matchers.tfidfMatcher import TFIDFMatcher
 from dahi.statement import Statement
 from dahi.storages import Mongo
+
 
 storage = Mongo("mongodb://localhost")
 
@@ -32,7 +35,7 @@ kb.insert(Document(
     docID=None, humanSay=Statement("elma patates uzum karpuz"), onMatch=None))
 
 context = Context()
-bot = Bot(knowledgeBase=kb)
+bot = Bot(CONFIG, knowledgeBase=kb)
 print bot.respond(context, Statement("kredi"))
 print bot.respond(context, Statement("faiz"))
 print bot.respond(context, Statement("nedir"))

@@ -1,20 +1,24 @@
+from dahi import CONFIG, import_component
 from dahi.document import Document
+from dahi.matchers.tfidfMatcher import TFIDFMatcher
 from dahi.nlu import NLU, MatchNotFound
 from dahi.statement import Statement
 
 
 class Bot(object):
 
-    def __init__(self, knowledgeBase):
+    def __init__(self, config, knowledgeBase):
+        self.config = config
         self.knowledgeBase = knowledgeBase
+        self.matcher = TFIDFMatcher(knowledgeBase)
 
     def respond(self, context, statement):
-        nlu = NLU(context, self.knowledgeBase)
+        nlu = NLU(self.matcher)
 
         context.humanSays(statement)
 
         try:
-            docID, statementID, score = nlu.findAnswer(
+            docID, score = nlu.findAnswer(
                 statement.text, threshold=0.3, amount=4)
             doc = self.knowledgeBase.get(docID)
             if doc.botSay:

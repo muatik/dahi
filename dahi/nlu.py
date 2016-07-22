@@ -1,4 +1,3 @@
-import operator
 
 
 class MatchNotFound(Exception):
@@ -22,24 +21,9 @@ class MatchNotFound(Exception):
 
 class NLU(object):
 
-    def __init__(self, context, knowledgeBase):
+    def __init__(self, matcher):
         super(NLU, self).__init__()
-        from dahi.tfidfModel import TfIdfModel
-        self.tfIdfTable = TfIdfModel(knowledgeBase)
-        self.model = TfIdfModel(knowledgeBase)
-
-    def match(self, query):
-        scores = {}
-
-        for term in tokenize(query):
-            statementIDs = self.tfIdfTable.getTfDocs(term)
-            for statementID in statementIDs:
-                termScore = self.tfIdfTable.getTfIdfScore(
-                    term, statementID=statementID)
-                scores[statementID] = scores.get(statementID, 0) + termScore
-
-        return sorted(
-            scores.items(), key=operator.itemgetter(1), reverse=True)[:5]
+        self.matcher = matcher
 
     def findBestMatch(self, matches):
         bestMatch = matches[0]
@@ -48,7 +32,7 @@ class NLU(object):
             return bestMatch
 
     def findAnswer(self, text, **kwargs):
-        matches = self.match(text)
+        matches = self.matcher.match(text)
 
         if not matches:
             raise MatchNotFound()
@@ -57,10 +41,9 @@ class NLU(object):
         if not bestMatch:
             raise MatchNotFound()
 
-        from dahi.tfidfModel import TfIdfModel
-        docID, statementID = TfIdfModel.parseStatementID(bestMatch[0])
+        docID = bestMatch[0]
         score = bestMatch[1]
-        return docID, statementID, score
+        return docID, score
 
 
 def tokenize(text):
