@@ -1,4 +1,3 @@
-from dahi import CONFIG, import_component
 from dahi.document import Document
 from dahi.matchers.tfidfMatcher import TFIDFMatcher
 from dahi.nlu import NLU, MatchNotFound
@@ -7,8 +6,7 @@ from dahi.statement import Statement
 
 class Bot(object):
 
-    def __init__(self, config, knowledgeBase):
-        self.config = config
+    def __init__(self, knowledgeBase):
         self.knowledgeBase = knowledgeBase
         self.matcher = TFIDFMatcher(knowledgeBase)
 

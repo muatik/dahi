@@ -6,10 +6,10 @@ from dahi.statement import Statement
 
 class KnowledgeBase(object):
 
-    def __init__(self, id):
+    def __init__(self, storageEngine, id):
         self.id = id
         self.docs = []
-        self.db = getDB()["docs"]
+        self.db = storageEngine["docs"]
 
     def getAll(self):
         return (Document.generate(i) for i in self.db.find())

@@ -1,4 +1,3 @@
-from dahi import CONFIG, import_component
 from dahi.bot import Bot
 from dahi.context import Context
 from dahi.document import Document
@@ -35,7 +34,7 @@ kb.insert(Document(
     docID=None, humanSay=Statement("elma patates uzum karpuz"), onMatch=None))
 
 context = Context()
-bot = Bot(CONFIG, knowledgeBase=kb)
+bot = Bot(knowledgeBase=kb)
 print bot.respond(context, Statement("kredi"))
 print bot.respond(context, Statement("faiz"))
 print bot.respond(context, Statement("nedir"))

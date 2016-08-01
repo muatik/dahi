@@ -2,7 +2,7 @@ from dahi.document import InvalidDocument
 
 
 class Context(object):
-    def __init__(self):
+    def __init__(self, contextId):
         self.userData = {}
         self.logs = []
 

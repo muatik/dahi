@@ -182,6 +182,16 @@ class TFIDFMatcher(AbstractMatcher):
         return tf * float(self.model.getIDF(term))
 
     def match(self, text, length=5):
+        """
+        matches given text against the knowledge base.
+
+        the best matching knowledge base documents will be returned in a list.
+        This list will be sorted descending by matching score.
+
+        :param text: query text
+        :param length: length of matching list to be returned
+        :return: list of the best matching knowledge base documents
+        """
         docScores = {}
 
         for term in tokenize(text):
