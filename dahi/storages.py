@@ -5,22 +5,25 @@ from pymongo import MongoClient
 class AbstractCollection(object):
 
     def find(self, pk):
-        raise NotImplemented
+        raise NotImplementedError
 
     def findAll(self, criteria):
-        raise NotImplemented
+        raise NotImplementedError
 
     def insert(self, object):
-        raise NotImplemented
+        raise NotImplementedError
 
     def update(self, criteria, object):
-        raise NotImplemented
+        raise NotImplementedError
 
     def remove(self, criteria):
-        raise NotImplemented
+        raise NotImplementedError
+
+    def count(self, criteria=None):
+        raise NotImplementedError
 
     def __getitem__(self, item):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class Collection(AbstractCollection):
@@ -53,6 +56,9 @@ class Collection(AbstractCollection):
     def remove(self, criteria):
         criteria = Collection.prepareCriteria(criteria)
         return self.coll.remove(criteria)
+
+    def count(self, criteria=None):
+        return self.coll.find(criteria).count()
 
 
 class Mongo(object):
