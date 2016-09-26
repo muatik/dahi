@@ -7,19 +7,21 @@ from dahi.statement import Statement
 class KnowledgeBase(object):
 
     def __init__(self, storageEngine, id):
-        self.id = id
+        self.id = ObjectId(id)
         self.docs = []
         self.db = storageEngine["docs"]
 
     def getAll(self):
-        return (Document.generate(i) for i in self.db.find())
+        return (Document.generate(i) for i in self.db.find({"kbId": self.id}))
 
     def get(self, docID):
-        data = self.db.find_one({"_id": ObjectId(docID)})
+        data = self.db.findOne({"kbId": self.id, "id": docID})
         return Document.generate(data)
 
     def insert(self, doc):
-        self.db.insert(doc.toDB())
+        record = doc.toDB()
+        record["kbId"] = self.id
+        self.db.insert(record)
 
     def update(self, doc):
         self.db.update(
@@ -31,10 +33,10 @@ class KnowledgeBase(object):
             docID = doc.id
         elif not docID:
             raise AttributeError("neither document itself or its id is given")
-        self.db.remove({"_id": docID})
+        self.db.remove({"kbId": self.id, "_id": docID})
 
     def truncate(self):
-        self.db.remove()
+        self.db.remove({"kbId": self.id})
 
     def count(self):
-        return self.db.count()
+        return self.db.count({"kbId": self.id})

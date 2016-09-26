@@ -164,6 +164,8 @@ class TFIDFMatcher(AbstractMatcher):
         for term in model.getTerms():
             df = model.getDF(term)
             idf = math.log(knowledgeBase.count() / float(1 + df))
+            if idf < 0:
+                idf = 1
             model.setIDF(term, idf)
 
         return model
@@ -226,8 +228,7 @@ if __name__ == '__main__':
     tt = TFIDFMatcher(kb)
     tt.generate(kb)
 
-    print tt.table
-    print tt.getTfs("karp")
-    print tt.getIdf("karp")
-    print tt.getTfIdfScore("karp", docID=71)
-    pass
+    print(tt.table)
+    print(tt.getTfs("karp"))
+    print(tt.getIdf("karp"))
+    print(tt.getTfIdfScore("karp", docID=71))
