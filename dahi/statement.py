@@ -7,7 +7,7 @@ class Statement(object):
         super(Statement, self).__init__()
         self.text = text
 
-    def toJSON(self):
+    def toJson(self):
         """
 
         returns instance's json representation
@@ -23,7 +23,7 @@ class Statement(object):
 
         :return: dictionary
         """
-        return self.toJSON()
+        return self.toJson()
 
     def __str__(self):
         return "Statement <\"{}\">".format(self.text)

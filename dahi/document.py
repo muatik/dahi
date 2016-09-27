@@ -34,11 +34,11 @@ class Document(object):
     def __repr__(self):
         return "Document <{}>".format(self.id)
 
-    def toJSON(self):
+    def toJson(self):
         return {
             "_id": str(self.id),
             "botSay": self.botSay.toJson() if self.botSay else None,
-            "humanSay": self.humanSay.toJson if self.humanSay else None,
+            "humanSay": self.humanSay.toJson() if self.humanSay else None,
             "onMatch": self.onMatch
         }
 

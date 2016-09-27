@@ -7,8 +7,8 @@ from dahi.storages import Mongo
 
 storage = Mongo("mongodb://localhost/dahi")
 contextId = "57960e326bb20030900eb6d4"
-bot1Id = "57e9095c102ee808b06f0de1"
-bot2Id = "57e9095c102ee808b06f0de2"
+bot1Id = "57e9095c102ee808b06f0ae1"
+bot2Id = "57e9095c102ee808b06f0ae2"
 
 
 try:
@@ -18,10 +18,10 @@ except ContextNotFoundError:
 
 
 
-bot1 = bots.Builder(storage).get(botId=bot1Id)
-bot2 = bots.Builder(storage).get(botId=bot2Id)
+# bot1 = bots.Builder(storage).get(botId=bot1Id)
+# bot2 = bots.Builder(storage).get(botId=bot2Id)
 #
-# bot1 = bots.Builder(storage).create(botId=bot1Id, meta={})
+bot1 = bots.Builder(storage).create(botId=bot1Id, meta={})
 # bot2 = bots.Builder(storage).create(botId=bot2Id, meta={})
 
 # bot1.learn(Document(
@@ -31,8 +31,8 @@ try:
     print(bot1.respond(context, Statement(text="elma")).botSay)
 except MatchNotFound:
     print("bot 1 match not found")
-print(context)
-try:
-    print(bot2.respond(context, Statement(text="elma")))
-except MatchNotFound:
-    print("bot 2 match not found")
+# print(context)
+# try:
+#     print(bot2.respond(context, Statement(text="elma")))
+# except MatchNotFound:
+#     print("bot 2 match not found")

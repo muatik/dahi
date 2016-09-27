@@ -164,7 +164,7 @@ class TFIDFMatcher(AbstractMatcher):
         for term in model.getTerms():
             df = model.getDF(term)
             idf = math.log(knowledgeBase.count() / float(1 + df))
-            if idf < 0:
+            if idf <= 0:
                 idf = 1
             model.setIDF(term, idf)
 

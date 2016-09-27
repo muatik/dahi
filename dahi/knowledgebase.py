@@ -24,9 +24,11 @@ class KnowledgeBase(object):
         self.db.insert(record)
 
     def update(self, doc):
+        record = doc.toDB()
+        record["kbId"] = self.id
         self.db.update(
             {"_id": ObjectId(doc.id)},
-            doc.toDB())
+            record)
 
     def remove(self, doc=None, docID=None):
         if doc:

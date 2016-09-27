@@ -37,7 +37,7 @@ def send_js(path):
 def getDocs():
     d = Bot(botId).knowledgeBase.getAll()
     # TODO: improve this jsonify operation, make it less verbose
-    a = [i.toJSON() for i in d]
+    a = [i.toJson() for i in d]
     return jsonify({"docs": a})
 
 
@@ -53,7 +53,7 @@ def insertDoc():
     bot.learn(doc)
 
     # TODO: every response must be in a standard format. restfulApi doc needed.
-    return jsonify(doc.toJSON())
+    return jsonify(doc.toJson())
 
 
 @api.route("/answer")
@@ -69,7 +69,7 @@ def getAnswer():
 
     context.insert(queryStatement)
     context.insert(responseStatement)
-    return jsonify(responseStatement.toJSON())
+    return jsonify(responseStatement.toJson())
 
 
 def run():

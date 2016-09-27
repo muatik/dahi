@@ -28,7 +28,7 @@ class NLU(object):
     def findBestMatch(self, matches):
         bestMatch = matches[0]
         score = bestMatch[1]
-        if score > 0.3:
+        if score > 0.2:
             return bestMatch
 
     def findAnswer(self, text, **kwargs):
