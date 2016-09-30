@@ -1,6 +1,7 @@
 from dahi import bots, contexts
 from dahi.contexts import ContextNotFoundError
 from dahi.document import Document
+from dahi.knowledgebase import KnowledgeBase
 from dahi.nlu import MatchNotFound
 from dahi.statement import Statement
 from dahi.storages import Mongo
@@ -18,10 +19,10 @@ except ContextNotFoundError:
 
 
 
-# bot1 = bots.Builder(storage).get(botId=bot1Id)
+bot1 = bots.Builder(storage).get(botId=bot1Id)
 # bot2 = bots.Builder(storage).get(botId=bot2Id)
 #
-bot1 = bots.Builder(storage).create(botId=bot1Id, meta={})
+# bot1 = bots.Builder(storage).create(botId=bot1Id, meta={})
 # bot2 = bots.Builder(storage).create(botId=bot2Id, meta={})
 
 # bot1.learn(Document(
@@ -36,3 +37,7 @@ except MatchNotFound:
 #     print(bot2.respond(context, Statement(text="elma")))
 # except MatchNotFound:
 #     print("bot 2 match not found")
+
+KnowledgeBase(storage, bot1Id).remove(docID="57ee51816bb2003008fcd4c2")
+for doc in KnowledgeBase(storage, bot1Id).getAll():
+    print(doc)

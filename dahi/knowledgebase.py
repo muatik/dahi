@@ -26,16 +26,14 @@ class KnowledgeBase(object):
     def update(self, doc):
         record = doc.toDB()
         record["kbId"] = self.id
-        self.db.update(
-            {"_id": ObjectId(doc.id)},
-            record)
+        self.db.update({"id": doc.id}, record)
 
     def remove(self, doc=None, docID=None):
         if doc:
             docID = doc.id
         elif not docID:
             raise AttributeError("neither document itself or its id is given")
-        self.db.remove({"kbId": self.id, "_id": docID})
+        self.db.remove({"kbId": self.id, "id": docID})
 
     def truncate(self):
         self.db.remove({"kbId": self.id})
